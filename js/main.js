@@ -48,7 +48,7 @@ gameMain.prototype = {
         game.input.addPointer();
         game.input.addPointer();
         
-         watchID2 = navigator.accelerometer.watchAcceleration(readAccel, onAccelError, { frequency: 20 });
+        window.addEventListener('deviceorientation', handleOrientation);
     },
     
     update: function(){
@@ -194,7 +194,7 @@ function next_level(){
     else if (Pings == 7){
         clearInterval(timer);
         
-        watchID = navigator.compass.watchHeading(compassSuccess, compassError);
+        window.addEventListener('deviceorientation', handleOrientation);
         
         updateText('Go West', 215, 425, 20);
     }
@@ -253,23 +253,31 @@ function next_level(){
     }
 }
 
-function readAccel(acceleration){    
-    acceY = acceleration.y;
-    instructionsLabel.text = acceY;
-    if (acceY < -8 && Pings == 11){
+function handleOrientation(event){    
+	beta = Math.round(event.beta);
+
+    instructionsLabel.text = beta;
+    
+    if (beta < -90 && Pings == 11){
         level_complete();
     }
 }
 
 function compassSuccess(heading) {
     var head = heading.magneticHeading;
+    
     if (Pings == 7 && head > 269 && head < 271){
         level_complete();
     }
 }
 
-function compassError(heading){}
-function onAccelError(){};
+function compassError(compassError){
+    updateText('Got Lucky', 210, 455, 0);
+    
+    setTimeout(function(){
+        level_complete();   
+    }, WAIT_TIME);	
+}
 
 function game_over(){
     level_complete();
