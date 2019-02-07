@@ -47,8 +47,6 @@ gameMain.prototype = {
         game.input.addPointer();
         game.input.addPointer();
         game.input.addPointer();
-        
-        window.addEventListener('deviceorientation', handleOrientation);
     },
     
     update: function(){
@@ -256,8 +254,6 @@ function next_level(){
 function handleOrientation(event){    
 	beta = Math.round(event.beta);
 
-    instructionsLabel.text = beta;
-    
     if (beta < -90 && Pings == 11){
         level_complete();
     }
