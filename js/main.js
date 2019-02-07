@@ -47,6 +47,8 @@ gameMain.prototype = {
         game.input.addPointer();
         game.input.addPointer();
         game.input.addPointer();
+        
+        window.addEventListener('deviceorientation', handleOrientation);
     },
     
     update: function(){
@@ -192,7 +194,7 @@ function next_level(){
     else if (Pings == 7){
         clearInterval(timer);
         
-        window.addEventListener('deviceorientation', handleOrientation);
+        watchID = navigator.compass.watchHeading(compassSuccess, compassError);
         
         updateText('Go West', 215, 425, 20);
     }
@@ -210,10 +212,7 @@ function next_level(){
     }
     
     else if (Pings == 9){
-        navigator.compass.clearWatch(watchID);
-
         updateText('3 fingers', 300, 440, -12);
-
     }
     
     else if (Pings == 10){
@@ -236,18 +235,15 @@ function next_level(){
         machine.inputEnabled = false;
         updateText('upside down', 230, 430, 0);
         
-        watchID2 = navigator.accelerometer.watchAcceleration(readAccel, onAccelError, { frequency: 20 });
-
+        window.addEventListener('deviceorientation', handleOrientation);
     }
     
     else if (Pings == 12){
-        navigator.accelerometer.clearWatch(watchID2);
-        
         updateText('This was fun!', 260, 455, 5);
         
         setTimeout(function(){
             game_over();
-        }, 5000);
+        }, 4000);
     }
 }
 
