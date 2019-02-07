@@ -47,6 +47,8 @@ gameMain.prototype = {
         game.input.addPointer();
         game.input.addPointer();
         game.input.addPointer();
+        
+         watchID2 = navigator.accelerometer.watchAcceleration(readAccel, onAccelError, { frequency: 20 });
     },
     
     update: function(){
@@ -253,7 +255,7 @@ function next_level(){
 
 function readAccel(acceleration){    
     acceY = acceleration.y;
-    
+    instructionsLabel.text = acceY;
     if (acceY < -8 && Pings == 11){
         level_complete();
     }
